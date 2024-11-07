@@ -3,17 +3,17 @@ import axios from 'axios';
 import { useTable } from 'react-table';
 import './Editor.css';
 
-function Editor() {
+function Editor({value}) {
   const [query, setQuery] = useState('');
   const [isEqual, setIsEqual] = useState(null);
   const [columns, setColumns] = useState([]);
   const [data, setData] = useState([]);
-
+console.log(value)
   const handleSubmit = async () => {
     setData([]);
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/check-output/672c9ee3291b78a192cf19e7`,
+        `http://localhost:3000/api/check-output/${value._id}`,
         { sqlQuery: query } // Send SQL query in request body
       );
 

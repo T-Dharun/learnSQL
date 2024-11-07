@@ -4,6 +4,7 @@ const Challenge = require('../models/Challenge');
 const multer = require('multer');
 const fs = require('fs');
 const csv = require('csv-parser');
+const Contest = require('../models/Contest');
 
 const upload = multer({ dest: 'uploads/' });
 
@@ -29,6 +30,14 @@ router.post('/:contestId/createChallenge', upload.single('outputFile'), async (r
       hints,
       tags
     });
+    const contest=await Contest.findById(contestId);
+    
+    contest.challenges=newChallenge._id;
+    await contest.save();
+    console.log(contest);
+
+    // Save the faculty document after updating the contests array
+    await newChallenge.save();
 
     const savedChallenge = await newChallenge.save();
 

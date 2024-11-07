@@ -15,7 +15,7 @@ const Home = () => {
         <div>
             {/* Header */}
             <header className="bg-primary text-white text-center py-3">
-                <h1>Welcome to My Website</h1>
+                <h1>Database Learning Platform</h1>
                 <p>Your one-stop solution for awesome content</p>
             </header>
 
@@ -73,7 +73,7 @@ const Home = () => {
                                     </button>
                                     <button
                                         className="btn btn-primary mt-3 px-4 py-2"
-                                        onClick={() => navigate("/test")}
+                                        onClick={() => navigate("/contestList")}
                                     >
                                         ViewContest
                                     </button>

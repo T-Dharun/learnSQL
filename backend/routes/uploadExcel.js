@@ -136,12 +136,13 @@ router.get('/execute-query', (req, res) => {
     try {
       const challengeId = req.params.challengeId;
       const sqlQuery = req.body.sqlQuery; // Access sqlQuery from the request body
-  
+      
       if (!sqlQuery) {
         return res.status(400).send('SQL query is required');
       }
   
       const challenge = await Challenge.findOne({ _id: challengeId });
+      console.log(challenge)
       if (!challenge) {
         return res.status(404).send('Challenge not found');
       }
@@ -152,7 +153,8 @@ router.get('/execute-query', (req, res) => {
           console.error('Error executing query:', err);
           return res.status(500).send('Error executing query');
         }
-  
+        console.log(JSON.stringify(results));
+        console.log(JSON.stringify(expectedOutputData))
         const isEqual = JSON.stringify(results) === JSON.stringify(expectedOutputData);
         console.log(results);
         res.json({ isEqual, results });

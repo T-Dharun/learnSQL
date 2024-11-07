@@ -23,7 +23,14 @@ const ContestForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/api/contest/create", contestData);
+      const token=localStorage.getItem('token');
+      const response = await axios.post("http://localhost:3000/api/contest/create", contestData,
+        {
+          headers: {
+              'Authorization': `Bearer ${token}`
+          }
+      }
+      );
       navigate(`/challenge/${response.data.contestId}`);
     } catch (error) {
       console.error("Error creating contest:", error);

@@ -1,21 +1,25 @@
 import React from 'react';
 import './Sidebar.css';
 
-function Sidebar() {
+function Sidebar({value}) {
+  console.log(value)
+  const table=value?.attributes?.split(",");
   return (
-    <div className="sidebar">
+    <>
+    {
+      value && <div className="sidebar">
       <h2>SQL Schema</h2>
 
       {/* Question Name Section */}
       <div className="question-name">
         <h3>Question Name</h3>
-        <p>Customer Table Structure</p>
+        <p>{value.question}</p>
       </div>
 
       {/* Description Section */}
       <div className="description">
         <h3>Description</h3>
-        <p>This is a sample SQL schema for the Customer table, containing basic columns like id, name, and referee_id.</p>
+        <p>{value.description}</p>
       </div>
 
       {/* Table Section */}
@@ -29,18 +33,14 @@ function Sidebar() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>id</td>
-              <td>int</td>
-            </tr>
-            <tr>
-              <td>name</td>
-              <td>varchar</td>
-            </tr>
-            <tr>
-              <td>referee_id</td>
-              <td>int</td>
-            </tr>
+            {
+              table?.map(item=>(
+                <tr>
+                  <td>{item.trim(" ")}</td>
+                  <td>int</td>
+                </tr>
+              ))
+            }
           </tbody>
         </table>
       </div>
@@ -48,15 +48,17 @@ function Sidebar() {
       {/* Hint Section */}
       <div className="hint">
         <h3>Hint</h3>
-        <p>Ensure that the id is a unique identifier for each customer and that referee_id refers to another customer.</p>
+        <p>{value.hints}</p>
       </div>
 
       {/* Tags Section */}
       <div className="tags">
         <h3>Tags</h3>
-        <p>#SQL #Database #Customer #Schema</p>
+        <p>{value.tags}</p>
       </div>
     </div>
+    }
+    </>
   );
 }
 

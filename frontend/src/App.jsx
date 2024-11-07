@@ -15,6 +15,7 @@ import ChallengeForm from "./components/ChallengeForm";
 import ViewTask from './components/task/ViewTask';
 import StudentTest from './page/StudentTest';
 import Sheet from './components/Interview/Sheet';
+import Contest from './components/contest/Contest';
 function App() {
   return (
     <>
@@ -31,8 +32,9 @@ function App() {
           <Route path="/contest" element={<ContestForm />} />
           <Route path="/challenge/:contestId" element={<ChallengeForm />} />
           <Route path="/view" element={<ViewTask/>} />
-          <Route path="/test" element={<StudentTest/>} />
+          <Route path="/test/:id" element={<StudentTest/>} />
           <Route path="/sheet" element={<Sheet/>} />
+          <Route path="/contestList" element={<Contest/>} />
         </Routes>
       </Router>
     </>
