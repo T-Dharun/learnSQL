@@ -23,7 +23,7 @@ const ContestForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:5000/api/contest/create", contestData);
+      const response = await axios.post("http://localhost:3000/api/contest/create", contestData);
       navigate(`/challenge/${response.data.contestId}`);
     } catch (error) {
       console.error("Error creating contest:", error);

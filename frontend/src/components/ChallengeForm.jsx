@@ -37,7 +37,7 @@ const ChallengeForm = () => {
     formData.append("attributes", attributes);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/uploadExcel", formData);
+      const response = await axios.post("http://localhost:3000/api/uploadExcel", formData);
       console.log("File uploaded and data inserted:", response.data);
 
       const outputFormData = new FormData();
@@ -50,7 +50,7 @@ const ChallengeForm = () => {
       outputFormData.append("outputFile", outputFile);  // Attach the file
       
       const respons = await axios.post(
-        `http://localhost:5000/api/challenge/${contestId}/createChallenge`,
+        `http://localhost:3000/api/challenge/${contestId}/createChallenge`,
         outputFormData,
         {
           headers: { 'Content-Type': 'multipart/form-data' }
