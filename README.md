@@ -1,3 +1,4 @@
+# **SQL Learning Platform**
 
 Start by cloning the repository to your local machine:
 
@@ -10,7 +11,7 @@ Start by cloning the repository to your local machine:
 - npm install
 - npm run dev
 
-# **SQL Learning Platform**
+
 
 ## Introduction
 The SQL Learning Platform is an interactive educational tool designed to help students master SQL through assignments, contests, labs, and practice environments, with role-based access for colleges, faculty, and students. It also features AI-powered assistance like query optimization, natural language to SQL conversion, and interview preparation with mock interview , offering a comprehensive path to SQL proficiency.
