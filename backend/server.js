@@ -23,6 +23,9 @@ app.use("/api", userRoutes);
 app.use("/task", taskRoutes);
 app.use("/api/", InterviewRoutes);
 app.use("/api/", discussionRoutes);
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
