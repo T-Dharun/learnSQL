@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const APIURL = "http://localhost:3000/";
+const APIURL = "https://learnsql-l80r.onrender.com/";
 
 export const viewContest = async () => {
   try {

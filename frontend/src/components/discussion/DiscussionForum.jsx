@@ -1,3 +1,5 @@
+
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./DiscussionForm.css";
@@ -69,7 +71,7 @@ const DiscussionForum = () => {
   const fetchQuestions = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3000/api/discussions?page=1&limit=10"
+        "https://learnsql-l80r.onrender.com/api/discussions?page=1&limit=10"
       );
       setQuestions(response.data.discussions);
     } catch (error) {
@@ -80,7 +82,7 @@ const DiscussionForum = () => {
   const handleAddQuestion = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/discussions",
+        "https://learnsql-l80r.onrender.com/api/discussions",
         {
           studentId: studentId,
           title: newQuestion.title,
@@ -103,7 +105,7 @@ const DiscussionForum = () => {
   ) => {
     try {
       await axios.patch(
-        `http://localhost:3000/api/discussions/${discussionId}/vote`,
+        `https://learnsql-l80r.onrender.com/api/discussions/${discussionId}/vote`,
         {
           targetType,
           targetId,
@@ -126,7 +128,7 @@ const DiscussionForum = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/discussions/${selectedQuestion._id}/answers`,
+        `https://learnsql-l80r.onrender.com/api/discussions/${selectedQuestion._id}/answers`,
         {
           studentId: studentId,
           content: newAnswer,

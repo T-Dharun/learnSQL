@@ -13,7 +13,7 @@ function Editor({ value }) {
     setData([]);
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/check-output/${value._id}`,
+        `https://learnsql-l80r.onrender.com/api/check-output/${value._id}`,
         { sqlQuery: query } // Send SQL query in request body
       );
 

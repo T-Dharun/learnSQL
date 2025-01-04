@@ -25,7 +25,7 @@ const ContestForm = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:3000/api/contest/create",
+        "https://learnsql-l80r.onrender.com/api/contest/create",
         { ...contestData,type:'Lab'},
         {
           headers: {

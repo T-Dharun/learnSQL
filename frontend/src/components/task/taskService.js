@@ -1,7 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const APIURL = "http://localhost:3000/";
+const APIURL = "https://learnsql-l80r.onrender.com/";
 
 export const getAllTasks = async () => {
   try {

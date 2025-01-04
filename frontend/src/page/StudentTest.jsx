@@ -15,7 +15,7 @@ function StudentTest() {
       try {
         console.log(id);
         const value = await axios.get(
-          `http://localhost:3000/api/getChallenge/${id}`
+          `https://learnsql-l80r.onrender.com/api/getChallenge/${id}`
         );
         console.log(value);
         setChallenge(value.data.challenges);

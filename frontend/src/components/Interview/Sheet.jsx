@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaStar, FaRegStar } from "react-icons/fa"; // Importing star icons for revision
@@ -11,7 +12,7 @@ const Sheet = () => {
   // Fetch problems from the API route
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/problem-sets") // Replace with your actual API route
+      .get("https://learnsql-l80r.onrender.com/api/problem-sets") // Replace with your actual API route
       .then((response) => {
         // Ensure the response data is always an array
         setProblems(Array.isArray(response.data) ? response.data : []);
@@ -49,7 +50,7 @@ const Sheet = () => {
   const update = (problemId, type) => {
     try {
       const response = axios.put(
-        `http://localhost:3000/api/update-status?id=${problemId}&type=${type}`
+        `https://learnsql-l80r.onrender.com/api/update-status?id=${problemId}&type=${type}`
       );
 
       if (response.status === 200) {

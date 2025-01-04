@@ -14,7 +14,7 @@ function Landing() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const user = await axios.get("http://localhost:3000/api/me", {
+        const user = await axios.get("https://learnsql-l80r.onrender.com/api/me", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

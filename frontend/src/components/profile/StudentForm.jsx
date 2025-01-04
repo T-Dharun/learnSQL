@@ -71,7 +71,7 @@ const StudentForm = () => {
   const handleSubmit=async()=>{
       console.log(data);
       try{
-        const user=await axios.post('http://localhost:3000/api/setInfo',data,{
+        const user=await axios.post('https://learnsql-l80r.onrender.com/api/setInfo',data,{
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

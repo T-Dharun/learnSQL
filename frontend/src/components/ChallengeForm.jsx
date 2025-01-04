@@ -45,7 +45,7 @@ const ChallengeForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/uploadExcel",
+        "https://learnsql-l80r.onrender.com/api/uploadExcel",
         formData
       );
       console.log("File uploaded and data inserted:", response.data);
@@ -60,7 +60,7 @@ const ChallengeForm = () => {
       outputFormData.append("outputFile", outputFile); // Attach the file
 
       const respons = await axios.post(
-        `http://localhost:3000/api/challenge/${contestId}/createChallenge`,
+        `https://learnsql-l80r.onrender.com/api/challenge/${contestId}/createChallenge`,
         outputFormData,
         {
           headers: { "Content-Type": "multipart/form-data" },
