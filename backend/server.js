@@ -12,6 +12,8 @@ require('dotenv').config(); // Load environment variables
 const dbConnect = require("./database/database");
 dbConnect();
 
+const PORT = 3000;
+
 app.use(cors());
 app.use(express.json());
 
@@ -24,7 +26,8 @@ app.use("/api/", InterviewRoutes);
 app.use("/api/", discussionRoutes);
 app.get("/", (req, res) => {
   res.send("Hello World!");
-});
+})
 
-// Export the Express app for Vercel serverless functions
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
