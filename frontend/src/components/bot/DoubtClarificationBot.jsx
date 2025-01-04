@@ -138,11 +138,10 @@ const DoubtClarificationBot = ({ setShowBot }) => {
 
     try {
       // Send user message to the backend
-      const response = await axios.post("http://localhost:5000/process", {
+      const response = await axios.post("https://dblearn-bot.onrender.com/process", {
         query: message,
         type: "doubt_clarification",
       });
-
       // Handle bot's response
       setMessages((prevMessages) => [
         ...prevMessages,

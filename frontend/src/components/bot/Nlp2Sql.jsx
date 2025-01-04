@@ -113,11 +113,11 @@ const NLPtoSQLBot = () => {
     ]);
 
     try {
-      const response = await axios.post('http://localhost:5000/process', {
+      const response = await axios.post('https://dblearn-bot.onrender.com/process', {
         query,
         type: 'NLPtoSQL', // specify bot type
       });
-
+      console.log(response);
       const botMessage = response.data.output
         ? response.data.output
         : 'No SQL query generated.';
