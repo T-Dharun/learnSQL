@@ -37,7 +37,7 @@ console.log(info1)
     const fetchUser = async () => {
       try {
         if (student || FacultyList) {
-          const user = await axios.post("http://localhost:3000/api/getStudentTask", {
+          const user = await axios.post("https://learnsql-l80r.onrender.com/api/getStudentTask", {
             id: qid
           }, {
             headers: {
