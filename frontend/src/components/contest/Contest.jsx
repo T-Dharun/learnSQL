@@ -27,7 +27,7 @@ const Contest = () => {
     fetchContests();
   }, []);
   return (
-    <div className="contest-container">
+    <div className="contest-container ">
       <h2 className="text-center contest-head-test ">List of Contests</h2>
       <div>
         <input

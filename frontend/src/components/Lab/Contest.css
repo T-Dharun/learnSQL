@@ -3,7 +3,8 @@
   padding: 5em;
   padding-top: 1em;
   background-color: rgba(0, 128, 255, 0.263);
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   flex: 1;
   background-color: #def2fe;
   background-image: radial-gradient(circle, #4e37ff 0.05em, #def2fe 1px);
