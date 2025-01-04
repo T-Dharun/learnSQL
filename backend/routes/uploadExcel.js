@@ -2,20 +2,11 @@ const express = require("express");
 const multer = require("multer");
 const xlsx = require("xlsx");
 const fs = require("fs");
-const mysql = require("mysql2");
-const Challenge = require("../models/Challenge");
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  database: "DBMS",
-});
-
-db.connect((err) => {
-  if (err) {
-    console.error("Error connecting to MySQL:", err);
-  } else {
-    console.log("Connected to MySQL");
-  }
+const { Pool } = require("pg");
+const db = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
+  connectionTimeoutMillis: 10000, 
 });
 
 const uploadDir = "./uploads";
@@ -33,6 +24,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+// Helper function to determine column types dynamically based on the data
 function determineColumnTypes(data) {
   const columnTypes = {};
   data.forEach((row) => {
@@ -53,6 +45,7 @@ function determineColumnTypes(data) {
 
 const router = express.Router();
 
+// Route to handle file upload and process Excel data
 router.post("/uploadExcel", upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
@@ -61,14 +54,13 @@ router.post("/uploadExcel", upload.single("file"), (req, res) => {
   const { tableName, attributes } = req.body;
 
   if (!tableName || !attributes) {
-    return res
-      .status(400)
-      .json({ error: "Table name and attributes are required" });
+    return res.status(400).json({ error: "Table name and attributes are required" });
   }
 
   const filePath = req.file.path;
 
   try {
+    // Read Excel file
     const workbook = xlsx.readFile(filePath);
     const sheetName = workbook.SheetNames[0];
     const sheet = workbook.Sheets[sheetName];
@@ -77,46 +69,55 @@ router.post("/uploadExcel", upload.single("file"), (req, res) => {
     const columns = attributes.split(",").map((attr) => attr.trim());
     const sheetColumns = Object.keys(jsonData[0]);
 
+    // Check for missing columns in the Excel file
     const missingColumns = columns.filter((col) => !sheetColumns.includes(col));
     if (missingColumns.length > 0) {
       return res.status(400).json({
-        error: `Missing columns in the Excel sheet: ${missingColumns.join(
-          ", "
-        )}`,
+        error: `Missing columns in the Excel sheet: ${missingColumns.join(", ")}`,
       });
     }
 
+    // Determine column types based on data
     const columnTypes = determineColumnTypes(jsonData);
 
-    const createTableQuery = `CREATE TABLE IF NOT EXISTS ?? (${columns
-      .map((col) => `${col} ${columnTypes[col] || "VARCHAR(255)"}`)
-      .join(", ")})`;
-    db.query(createTableQuery, [tableName], (err) => {
+    // Create table query
+    const createTableQuery = `
+      CREATE TABLE IF NOT EXISTS "${tableName}" (
+        ${columns
+          .map(
+            (col) => `"${col}" ${columnTypes[col] || "VARCHAR(255)"}`
+          )
+          .join(", ")}
+      )`;
+
+    // Execute CREATE TABLE query
+    db.query(createTableQuery, (err) => {
       if (err) {
         console.error("Error creating table:", err);
         fs.unlinkSync(filePath);
         return res.status(500).json({ error: "Failed to create table" });
       }
 
+      // Prepare data for insertion
       const values = jsonData.map((row) => columns.map((col) => row[col]));
 
-      const insertQuery = `INSERT INTO ?? (${columns
-        .map(() => "??")
-        .join(", ")}) VALUES ?`;
-      const queryValues = [tableName, ...columns, values];
+      // Insert data query
+      const insertQuery = `
+        INSERT INTO "${tableName}" (${columns.map(() => `"??"`).join(", ")}) 
+        VALUES ${values.map(() => `(?)`).join(", ")}
+      `;
 
-      db.query(insertQuery, queryValues, (err, result) => {
+      // Execute INSERT query
+      db.query(insertQuery, [columns, ...values], (err, result) => {
         fs.unlinkSync(filePath);
 
         if (err) {
-          console.error("Error inserting data into MySQL:", err);
-          return res
-            .status(500)
-            .json({ error: "Failed to insert data into MySQL" });
+          console.error("Error inserting data into database:", err);
+          return res.status(500).json({ error: "Failed to insert data into database" });
         }
 
         res.status(200).json({
-          message: `${result.affectedRows} records inserted successfully`,
+          message: `${result.rowCount} records inserted successfully`,
         });
       });
     });
@@ -127,6 +128,7 @@ router.post("/uploadExcel", upload.single("file"), (req, res) => {
   }
 });
 
+// Route to execute any SQL query provided by the user
 router.get("/execute-query", (req, res) => {
   const sqlQuery = req.query.sql;
   if (!sqlQuery) {
@@ -141,20 +143,21 @@ router.get("/execute-query", (req, res) => {
   });
 });
 
+// Route to check if the output matches the expected output for a challenge
 router.post("/check-output/:challengeId", async (req, res) => {
   try {
     const challengeId = req.params.challengeId;
-    const sqlQuery = req.body.sqlQuery; // Access sqlQuery from the request body
+    const sqlQuery = req.body.sqlQuery;
 
     if (!sqlQuery) {
       return res.status(400).send("SQL query is required");
     }
 
     const challenge = await Challenge.findOne({ _id: challengeId });
-    console.log(challenge);
     if (!challenge) {
       return res.status(404).send("Challenge not found");
     }
+
     const expectedOutputData = challenge.outputData;
 
     db.query(sqlQuery, (err, results) => {
@@ -162,11 +165,9 @@ router.post("/check-output/:challengeId", async (req, res) => {
         console.error("Error executing query:", err);
         return res.status(500).send("Error executing query");
       }
-      console.log(JSON.stringify(results));
-      console.log(JSON.stringify(expectedOutputData));
+
       const isEqual =
         JSON.stringify(results) === JSON.stringify(expectedOutputData);
-      console.log(results);
       res.json({ isEqual, results });
     });
   } catch (error) {
@@ -174,7 +175,5 @@ router.post("/check-output/:challengeId", async (req, res) => {
     res.status(500).send("An error occurred");
   }
 });
-
-module.exports = router;
 
 module.exports = router;

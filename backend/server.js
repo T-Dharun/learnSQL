@@ -8,6 +8,7 @@ const challengeRoutes = require("./routes/challenge");
 const InterviewRoutes = require("./routes/InterviewRoutes");
 const uploadExcelRoutes = require("./routes/uploadExcel");
 const discussionRoutes = require("./routes/discussionRoutes");
+require('dotenv').config(); // Load environment variables
 const dbConnect = require("./database/database");
 dbConnect();
 
